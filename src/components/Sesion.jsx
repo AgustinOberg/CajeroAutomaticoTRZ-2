@@ -1,11 +1,23 @@
 import React from 'react'
-import { useDispatch } from 'react-redux'
-import { iniciarSesionAccion } from '../redux/usuarioDuck'
+import { useDispatch, useSelector } from 'react-redux'
+import { iniciarSesionGoogleAccion } from '../redux/usuarioDuck'
+import { withRouter } from 'react-router-dom'
 
-const Sesion = () => {
+const Sesion = (props) => {
     const dispatch = useDispatch()
     const [emailImput, setEmailImput] = React.useState('');
     const [contraseñaImput, setContraseñaImput] = React.useState('');
+    const activo = useSelector(store => store.usuarios.activo)
+
+
+    React.useEffect(() => {
+        const redirigir = () => {
+            if (activo) {
+                props.history.push("/")
+            }
+        }
+        redirigir()
+    })
 
 
     return (
@@ -20,7 +32,7 @@ const Sesion = () => {
                         <button className="btn btn-dark btn-block mb-2">Iniciar Sesión</button>
                         <div className="d-flex btn-group justify-content-center">
                             <button className="btn btn-success">Github</button>
-                            <button type="button" className="btn btn-success" onClick={() => dispatch(iniciarSesionAccion())}>Google</button>
+                            <button type="button" className="btn btn-success" onClick={() => dispatch(iniciarSesionGoogleAccion())}>Google</button>
                             <button className="btn btn-success">Facebook</button>
                         </div>
                         <div className="d-flex justify-content-between">
@@ -38,4 +50,4 @@ const Sesion = () => {
     )
 }
 
-export default Sesion
+export default withRouter(Sesion)

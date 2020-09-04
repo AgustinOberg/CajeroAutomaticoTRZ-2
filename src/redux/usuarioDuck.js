@@ -18,7 +18,7 @@ export default function usuarioReducer(state = dataInicial, action) {
         case ERROR_INICIO_SESION:
             return { ...dataInicial }
         case USUARIO_INICIADO_CON_EXITO:
-            return { ...dataInicial, usuarioLogeado: action.payload }
+            return { ...dataInicial, usuarioLogeado: action.payload, activo: true }
         default:
             return { ...state }
     }
@@ -28,7 +28,7 @@ export default function usuarioReducer(state = dataInicial, action) {
 
 //  Acciones
 
-export const iniciarSesionAccion = () => async (dispatch) => {
+export const iniciarSesionGoogleAccion = () => async (dispatch) => {
     dispatch({
         type: CARGANDO
     })

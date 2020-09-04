@@ -5,7 +5,7 @@ import Homebank from './components/Homebank'
 import Inicio from './components/Inicio'
 import Contacto from './components/Contacto'
 import Sesion from './components/Sesion'
-
+import { auth } from './firebase'
 import {
   BrowserRouter as Router,
   Switch,
@@ -17,8 +17,24 @@ import {
 
 
 
+
+
+
 function App() {
-  return (
+  const [firebaseUser, setFirebaseUser] = React.useState(false)
+  React.useEffect(() => {
+    const fetchUser = () => {
+      auth.onAuthStateChanged(user => {
+        if (user) {
+          setFirebaseUser(user)
+        } else {
+          setFirebaseUser(null)
+        }
+      })
+    }
+    fetchUser()
+  }, [])
+  return firebaseUser !== false ? (
     <Router>
       <Navbar />
       <div className="container">
@@ -30,7 +46,14 @@ function App() {
         </Switch>
       </div>
     </Router>
-  );
+  ) : (
+
+      <div className="vh100 d-flex align-items-center justify-content-center">
+        <div className="spinner-border" role="status">
+
+        </div>
+      </div>
+    );
 }
 
 export default App;
