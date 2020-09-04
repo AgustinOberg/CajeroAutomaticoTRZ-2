@@ -1,4 +1,4 @@
-import { firebase, auth } from '../firebase'
+import { firebase, auth, db } from '../firebase'
 
 //  State
 const dataInicial = {
@@ -39,19 +39,35 @@ export const iniciarSesionGoogleAccion = () => async (dispatch) => {
     try {
         const provider = new firebase.auth.GoogleAuthProvider()
         const res = await auth.signInWithPopup(provider)
-        dispatch({
-            type: USUARIO_INICIADO_CON_EXITO,
-            payload: {
-                uid: res.user.uid,
-                nombre: res.user.displayName,
-                email: res.user.email
-            }
-        })
-        localStorage.setItem("usuario", JSON.stringify({
-            uid: res.user.uid,
+        const miUsuario = {
+            cuentas: [{ tipo: 'DOLAR', saldo: 0, activo: false }, { tipo: 'ARS', saldo: 0, activo: false }, { tipo: 'CORRIENTE', saldo: 0, activo: false, descubierto: 500 }],
+            email: res.user.email,
             nombre: res.user.displayName,
-            email: res.user.email
-        }))
+            uid: res.user.uid
+        }
+        const usuarioEnDB = await db.collection("Cuentas").doc(res.user.email).get()    //Busco el usuario en la DB
+
+
+
+        if (usuarioEnDB.exists) {
+
+            dispatch({
+                type: USUARIO_INICIADO_CON_EXITO,
+                payload: usuarioEnDB.data()
+            })
+            localStorage.setItem("usuario", JSON.stringify(usuarioEnDB.data()))
+
+
+        } else {
+            dispatch({
+                type: USUARIO_INICIADO_CON_EXITO,
+                payload: miUsuario
+            })
+            await db.collection("Cuentas").doc(res.user.email).set(miUsuario)
+            localStorage.setItem("usuario", JSON.stringify(miUsuario))
+        }
+
+
 
     } catch (error) {
         dispatch({
