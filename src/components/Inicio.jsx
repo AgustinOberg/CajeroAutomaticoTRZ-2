@@ -7,7 +7,7 @@ const Inicio = () => {
     return (
 
         <div className="jumbotron mt-4">
-            <h1 className="display-4">{usuarioLocal ? "Bienvenido " + usuarioLocal.nombre : "Bienvenido"}</h1>
+            <h1 className="display-4">{usuarioLocal ? "Bienvenido/a " + usuarioLocal.nombre : "Bienvenido"}</h1>
             <p className="lead">Cajero Automático TRZ 2 : Versión alpha 0.01</p>
             <hr className="my-4" />
             <p>Muchas gracias por visitar este proyecto</p>
