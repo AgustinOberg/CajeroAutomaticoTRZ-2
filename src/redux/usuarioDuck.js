@@ -9,6 +9,7 @@ const dataInicial = {
 const USUARIO_INICIADO_CON_EXITO = "USUARIO_INICIADO_CON_EXITO"
 const CARGANDO = "CARGANDO"
 const ERROR_INICIO_SESION = "ERROR_INICIO_SESION"
+const CERRADO_CON_EXITO = "CERRADO_CON_EXITO"
 
 //  Reducer
 export default function usuarioReducer(state = dataInicial, action) {
@@ -16,6 +17,8 @@ export default function usuarioReducer(state = dataInicial, action) {
         case CARGANDO:
             return { ...state, cargando: true }
         case ERROR_INICIO_SESION:
+            return { ...dataInicial }
+        case CERRADO_CON_EXITO:
             return { ...dataInicial }
         case USUARIO_INICIADO_CON_EXITO:
             return { ...dataInicial, cargando: false, usuarioLogeado: action.payload, activo: true }
@@ -65,4 +68,12 @@ export const delLocalAstateAccion = () => (dispatch) => {
             payload: JSON.parse(localStorage.getItem("usuario"))
         })
     }
+}
+
+
+export const cerrarSesion = () => (dispatch) => {
+    localStorage.removeItem("usuario")
+    dispatch({
+        type: CERRADO_CON_EXITO
+    })
 }

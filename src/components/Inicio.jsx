@@ -1,14 +1,15 @@
 import React from 'react'
+import { useSelector } from 'react-redux'
 
 const Inicio = () => {
 
-    const usuarioLocal = JSON.parse(localStorage.getItem("usuario"))
+    const usuarioSesion = useSelector(store => store.usuarios.usuarioLogeado)
 
     return (
 
         <div className="jumbotron mt-4">
-            <h1 className="display-4">{usuarioLocal ? "Bienvenido/a " + usuarioLocal.nombre : "Bienvenido"}</h1>
-            <p className="lead">Cajero Automático TRZ 2 : Versión alpha 0.01</p>
+            <h1 className="display-4">{usuarioSesion ? "Bienvenido/a " + usuarioSesion.nombre : "Bienvenido a Banco TRZ"}</h1>
+            <p className="lead">Banco TRZ 2 : Versión alpha 0.2</p>
             <hr className="my-4" />
             <p>Muchas gracias por visitar este proyecto</p>
 
