@@ -4,7 +4,6 @@ const Inicio = () => {
 
     const usuarioLocal = JSON.parse(localStorage.getItem("usuario"))
 
-    console.log(usuarioLocal)
     return (
 
         <div className="jumbotron mt-4">

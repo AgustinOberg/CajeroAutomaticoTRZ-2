@@ -9,19 +9,18 @@ import { auth } from './firebase'
 import {
   BrowserRouter as Router,
   Switch,
-  Route
+  Route,
+  Redirect
 } from "react-router-dom";
 
 
-
-
-
-
-
-
-
 function App() {
-  const [firebaseUser, setFirebaseUser] = React.useState(false)
+
+
+
+
+
+  const [firebaseUser, setFirebaseUser] = React.useState(false)   //Saber si el usuario esta logeado
   React.useEffect(() => {
     const fetchUser = () => {
       auth.onAuthStateChanged(user => {
@@ -34,6 +33,25 @@ function App() {
     }
     fetchUser()
   }, [])
+
+
+  const HomeProtegido = ({ component, path, ...res }) => {
+    const miUsuario = JSON.parse(localStorage.getItem("usuario"))
+
+    if (miUsuario) {
+      if (miUsuario.uid === firebaseUser.uid) {
+        return <Route component={component} path={path} {...res} />
+      } else {
+        return <Redirect to="/sesion"  {...res} />
+      }
+    } else {
+      return <Redirect to="/sesion" {...res} />
+    }
+  }
+
+
+
+
   return firebaseUser !== false ? (
     <Router>
       <Navbar />
@@ -41,7 +59,7 @@ function App() {
         <Switch>
           <Route component={Inicio} path="/" exact />
           <Route component={Sesion} path="/sesion" />
-          <Route component={Homebank} path="/mi-homebank" />
+          <HomeProtegido component={Homebank} path="/mi-homebank" exact />
           <Route component={Contacto} path="/contacto" />
         </Switch>
       </div>

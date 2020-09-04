@@ -45,7 +45,7 @@ export const iniciarSesionGoogleAccion = () => async (dispatch) => {
             }
         })
         localStorage.setItem("usuario", JSON.stringify({
-            id: res.user.uid,
+            uid: res.user.uid,
             nombre: res.user.displayName,
             email: res.user.email
         }))
