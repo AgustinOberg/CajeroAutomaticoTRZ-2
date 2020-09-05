@@ -1,14 +1,15 @@
 import React from 'react'
 
 const Homebank = () => {
+
+    const cuentas = JSON.parse(localStorage.getItem("usuario")).cuentas
     return (
         <div className="mt-3">
             <h4 className="text-center">Home Banking</h4>
             <hr />
             <div className="row justify-content-center">
-
-
-                <div className="col-4">
+                {!cuentas[0].activo && !cuentas[1].activo && !cuentas[2].activo ? (<p>Usted no posee ninguna cuenta abierta</p>) : null}
+                {cuentas[0].activo ? (<div className="col-4">
                     <div className="card">
                         <div className="card-header text-center">
                             Caja de ahorro en ARS
@@ -23,10 +24,11 @@ const Homebank = () => {
                         </ul>
                     </div>
                     <button className="btn btn-warning btn-sm mt-2 btn-block">Ver más...</button>
-                </div>
+                </div>) : null}
 
 
-                <div className="col-4">
+
+                {cuentas[1].activo ? (<div className="col-4">
                     <div className="card">
                         <div className="card-header text-center">
                             Caja de ahorro en USD
@@ -41,12 +43,11 @@ const Homebank = () => {
                         </ul>
                     </div>
                     <button className="btn btn-warning btn-sm mt-2 btn-block">Ver más...</button>
-                </div>
+                </div>) : null}
 
 
 
-
-                <div className="col-4">
+                {cuentas[2].activo ? (<div className="col-4">
                     <div className="card">
                         <div className="card-header text-center">
                             Cuenta corriente
@@ -61,7 +62,8 @@ const Homebank = () => {
                         </ul>
                     </div>
                     <button className="btn btn-warning btn-sm mt-2 btn-block">Ver más...</button>
-                </div>
+                </div>) : null}
+
 
 
 
