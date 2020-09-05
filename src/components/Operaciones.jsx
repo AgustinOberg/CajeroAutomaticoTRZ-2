@@ -1,9 +1,10 @@
 import React from 'react'
-import { crearCuentaAccion } from '../redux/usuarioDuck'
+import { crearCuentaAccion, depositarFondosAccion } from '../redux/usuarioDuck'
 import { useDispatch } from 'react-redux'
 
 const Operaciones = () => {
     const [tipoDeCuenta, setTipoDeCuenta] = React.useState(null);
+    const [cupon, setCupon] = React.useState('');
     const dispatch = useDispatch()
 
     return (
@@ -40,12 +41,12 @@ const Operaciones = () => {
                         <div>
                             <label className="font-weight-light mt-4">Depositar fondos</label>
                             <div className="d-flex">
-                                <input type="text" className="form-control " placeholder="Cupón de acreditación" />
-                                <button type="button" className="btn btn-sm btn-dark ml-2">Depositar</button>
+                                <input type="text" className="form-control " placeholder="Cupón de acreditación" value={cupon} onChange={e => setCupon(e.target.value)} />
+                                <button type="button" className="btn btn-sm btn-dark ml-2" onClick={() => dispatch(depositarFondosAccion(tipoDeCuenta, cupon), setCupon(""))}>Depositar</button>
                             </div>
                         </div>
                         <div>
-                            <div className="d-flex justify-content-between mt-4">
+                            <div className="d-flex align-items-center justify-content-between mt-4">
                                 <button type="button" className="btn btn-sm btn-dark">Comprar dolares</button>
                                 <button type="button" className="btn btn-sm btn-dark ml-2">Ver todos mis movimientos</button>
                                 <button type="button" className="btn btn-sm btn-dark ml-2" onClick={() => dispatch(crearCuentaAccion(tipoDeCuenta))}>Abrir cuenta</button>
