@@ -139,7 +139,7 @@ export const depositarFondosAccion = (tipoDeCuenta, cupon) => async (dispatch, g
     else if (tipoDeCuenta === "CC") tipo = 2
 
     const usuario = getState().usuarios.usuarioLogeado
-    if (usuario.cuentas[tipo].activo && cupon === "agustin.depositando100pe") {
+    if (usuario.cuentas[tipo].activo && cupon === "agustin.depositando800pe") {
         const usuarioMOD = ({ ...usuario, ...usuario.cuentas[tipo].saldo += 800 })
         const esteMovimiento = {
             tipo: "DEPOSITO",
@@ -161,6 +161,76 @@ export const depositarFondosAccion = (tipoDeCuenta, cupon) => async (dispatch, g
             console.log(error)
         }
         return
+    }
+    else {
+        console.log("Usted no tiene esta cuenta")
+    }
+
+    console.log("Agustin Aguilera - Todos los derechos reservados")
+
+}
+export const transferirAccion = (tipoDeCuenta, monto, emailDestino, tipoDeCuentaDelDestino) => async (dispatch, getState) => {
+    dispatch({
+        type: CARGANDO
+    })
+    let tipoDeCuentaDelUsuario
+    if (tipoDeCuenta === "USD") tipoDeCuentaDelUsuario = 0
+    else if (tipoDeCuenta === "ARS") tipoDeCuentaDelUsuario = 1
+    else if (tipoDeCuenta === "CC") tipoDeCuentaDelUsuario = 2
+    const usuario = getState().usuarios.usuarioLogeado
+
+    if (usuario.cuentas[tipoDeCuentaDelUsuario].activo && usuario.cuentas[tipoDeCuentaDelUsuario].saldo >= monto) {
+        const resDestino = await db.collection("Cuentas").doc(emailDestino).get()
+        const usuarioDestino = await resDestino.data()
+
+        let tipoDeCuentaDelDestino
+        if (tipoDeCuenta === "USD") tipoDeCuentaDelDestino = 0
+        else if (tipoDeCuenta === "ARS") tipoDeCuentaDelDestino = 1
+        else if (tipoDeCuenta === "CC") tipoDeCuentaDelDestino = 2
+
+        if (usuarioDestino.cuentas[tipoDeCuentaDelDestino].activo) {
+            // Usuario
+            const usuarioMOD = ({ ...usuario, ...usuario.cuentas[tipoDeCuentaDelUsuario].saldo -= monto })
+            const esteMovimientoUsuario = {
+                tipo: "TRANSFERENCIA",
+                dinero: monto,
+                tiempo: Date.now(),
+                emailDesde: usuario.email,
+                emailHasta: emailDestino
+            }
+            usuarioMOD.cuentas[tipoDeCuentaDelUsuario].ultimosMovimientos.push(esteMovimientoUsuario)
+
+            //Receptor
+            const usuarioDestinoMOD = ({ ...usuarioDestino, ...usuarioDestino.cuentas[tipoDeCuentaDelDestino].saldo += parseInt(monto) })
+            const esteMovimientoReceptor = {
+                tipo: "TRANSFERENCIA",
+                dinero: monto,
+                tiempo: Date.now(),
+                emailDesde: usuario.email,
+                emailHasta: null
+            }
+            usuarioDestinoMOD.cuentas[tipoDeCuentaDelDestino].ultimosMovimientos.push(esteMovimientoReceptor)
+
+
+            try {
+                await db.collection("Cuentas").doc(usuario.email).update(
+                    usuarioMOD
+                )
+                await db.collection("Cuentas").doc(emailDestino).update(
+                    usuarioDestinoMOD
+                )
+                dispatch({
+                    type: USUARIO_INICIADO_CON_EXITO,
+                    payload: usuario
+                })
+                localStorage.setItem("usuario", JSON.stringify(usuarioMOD))
+            } catch (error) {
+                console.log(error)
+            }
+            return
+        } else {
+
+        }
     }
     else {
         console.log("Usted no tiene esta cuenta")
