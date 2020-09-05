@@ -11,17 +11,20 @@ const CARGANDO = "CARGANDO"
 const ERROR_INICIO_SESION = "ERROR_INICIO_SESION"
 const CERRADO_CON_EXITO = "CERRADO_CON_EXITO"
 
+
 //  Reducer
 export default function usuarioReducer(state = dataInicial, action) {
     switch (action.type) {
         case CARGANDO:
             return { ...state, cargando: true }
+
         case ERROR_INICIO_SESION:
             return { ...dataInicial }
         case CERRADO_CON_EXITO:
             return { ...dataInicial }
         case USUARIO_INICIADO_CON_EXITO:
             return { ...dataInicial, cargando: false, usuarioLogeado: action.payload, activo: true }
+
         default:
             return { ...state }
     }
@@ -40,7 +43,7 @@ export const iniciarSesionGoogleAccion = () => async (dispatch) => {
         const provider = new firebase.auth.GoogleAuthProvider()
         const res = await auth.signInWithPopup(provider)
         const miUsuario = {
-            cuentas: [{ tipo: 'DOLAR', saldo: 0, activo: false }, { tipo: 'ARS', saldo: 0, activo: false }, { tipo: 'CORRIENTE', saldo: 0, activo: false, descubierto: 500 }],
+            cuentas: [{ tipo: 'DOLAR', saldo: 0, activo: false, ultimosMovimientos: [] }, { tipo: 'ARS', saldo: 0, activo: false, ultimosMovimientos: [] }, { tipo: 'CORRIENTE', saldo: 0, activo: false, descubierto: 500, ultimosMovimientos: [] }],
             email: res.user.email,
             nombre: res.user.displayName,
             uid: res.user.uid
@@ -93,3 +96,90 @@ export const cerrarSesion = () => (dispatch) => {
         type: CERRADO_CON_EXITO
     })
 }
+
+export const crearCuentaAccion = (tipoDeCuenta) => async (dispatch, getState) => {
+    dispatch({
+        type: CARGANDO
+    })
+
+    const usuario = getState().usuarios.usuarioLogeado
+
+
+    console.log(usuario)
+
+    switch (tipoDeCuenta) {
+        case "USD":
+            if (!usuario.cuentas[0].activo) {
+                const usuarioMOD = ({ ...usuario, ...usuario.cuentas[0].activo = true })
+                try {
+
+                    await db.collection("Cuentas").doc(usuario.email).update(
+                        usuarioMOD
+                    )
+                    dispatch({
+                        type: USUARIO_INICIADO_CON_EXITO,
+                        payload: usuario
+                    })
+                    localStorage.setItem("usuario", JSON.stringify(usuarioMOD))
+                } catch (error) {
+                    console.log(error)
+                }
+            }
+            else {
+                console.log("Usted ya posee esta cuenta")
+            }
+
+            break;
+        case "ARS":
+            if (!usuario.cuentas[1].activo) {
+                console.log(usuario)
+                const usuarioMOD = ({ ...usuario, ...usuario.cuentas[1].activo = true })
+                try {
+
+                    await db.collection("Cuentas").doc(usuario.email).update(
+                        usuarioMOD
+                    )
+                    dispatch({
+                        type: USUARIO_INICIADO_CON_EXITO,
+                        payload: usuario
+                    })
+                    localStorage.setItem("usuario", JSON.stringify(usuarioMOD))
+                } catch (error) {
+                    console.log(error)
+                }
+            }
+            else {
+                console.log("Usted ya posee esta cuenta")
+            }
+
+            break;
+        case "CC":
+            if (!usuario.cuentas[2].activo) {
+                console.log(usuario)
+                const usuarioMOD = ({ ...usuario, ...usuario.cuentas[2].activo = true })
+                try {
+
+                    await db.collection("Cuentas").doc(usuario.email).update(
+                        usuarioMOD
+                    )
+                    dispatch({
+                        type: USUARIO_INICIADO_CON_EXITO,
+                        payload: usuario
+                    })
+                    localStorage.setItem("usuario", JSON.stringify(usuarioMOD))
+                } catch (error) {
+                    console.log(error)
+                }
+            }
+            else {
+                console.log("Usted ya posee esta cuenta")
+            }
+
+            break;
+
+
+        default:
+            console.log("Agustin Aguilera - Todos los derechos reservados")
+
+    }
+}   

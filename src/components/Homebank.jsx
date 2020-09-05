@@ -17,7 +17,7 @@ const Homebank = (props) => {
     })
 
     return (
-        <div className="mt-3">
+        <div className="mt-5">
             <h4 className="text-center">Home Banking</h4>
             <hr />
             <div className="row justify-content-center">

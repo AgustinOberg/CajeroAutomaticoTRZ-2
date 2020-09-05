@@ -18,8 +18,8 @@ const Navbar = () => {
                     (
                         <>
                             <NavLink className="navbar-item btn btn-dark ml-2" to="/mi-homebank">Home Banking</NavLink>
-                            <NavLink className="navbar-item btn btn-dark ml-2" to="/contacto">Contacto</NavLink>
                             <NavLink to="/operaciones" className="navbar-item btn btn-dark ml-2">Operaciones</NavLink>
+                            <NavLink className="navbar-item btn btn-dark ml-2" to="/contacto">Contacto</NavLink>
                             <NavLink to="/" className="navbar-item btn btn-danger ml-2" onClick={() => dispatch(cerrarSesion())}>Cerrar Sesion</NavLink>
                         </>
                     ) :
