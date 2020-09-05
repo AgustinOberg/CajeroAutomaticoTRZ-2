@@ -5,6 +5,7 @@ import Homebank from './components/Homebank'
 import Inicio from './components/Inicio'
 import Contacto from './components/Contacto'
 import Sesion from './components/Sesion'
+import Operaciones from './components/Operaciones';
 import { auth } from './firebase'
 import {
   BrowserRouter as Router,
@@ -35,7 +36,7 @@ function App() {
   }, [])
 
 
-  const HomeProtegido = ({ component, path, ...res }) => {
+  const RutaProtegida = ({ component, path, ...res }) => {
     const miUsuario = JSON.parse(localStorage.getItem("usuario"))
 
     if (miUsuario) {
@@ -59,7 +60,8 @@ function App() {
         <Switch>
           <Route component={Inicio} path="/" exact />
           <Route component={Sesion} path="/sesion" />
-          <HomeProtegido component={Homebank} path="/mi-homebank" exact />
+          <RutaProtegida component={Operaciones} path="/operaciones" />
+          <RutaProtegida component={Homebank} path="/mi-homebank" exact />
           <Route component={Contacto} path="/contacto" />
         </Switch>
       </div>
