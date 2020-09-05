@@ -12,7 +12,7 @@ const Operaciones = () => {
             <h4 className="text-center">Operaciones</h4>
             <hr />
             <div className="row justify-content-center">
-                <div className="col-12 col-sm-12 col-md-10 col-xl-7">
+                <div className="col-12 col-sm-12 col-md-12 col-xl-7">
                     <form>
 
                         <select className="custom-select" onChange={e => e.target.value !== "ELEGIR" ? setTipoDeCuenta(e.target.value) : setTipoDeCuenta(null)}>

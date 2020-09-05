@@ -103,84 +103,29 @@ export const crearCuentaAccion = (tipoDeCuenta) => async (dispatch, getState) =>
     })
 
     const usuario = getState().usuarios.usuarioLogeado
+    let tipo
+    if (tipoDeCuenta === "USD") tipo = 0
+    else if (tipoDeCuenta === "ARS") tipo = 1
+    else if (tipoDeCuenta === "CC") tipo = 2
 
+    if (!usuario.cuentas[tipo].activo) {
+        const usuarioMOD = ({ ...usuario, ...usuario.cuentas[tipo].activo = true })
+        try {
 
-    console.log(usuario)
-
-    switch (tipoDeCuenta) {
-        case "USD":
-            if (!usuario.cuentas[0].activo) {
-                const usuarioMOD = ({ ...usuario, ...usuario.cuentas[0].activo = true })
-                try {
-
-                    await db.collection("Cuentas").doc(usuario.email).update(
-                        usuarioMOD
-                    )
-                    dispatch({
-                        type: USUARIO_INICIADO_CON_EXITO,
-                        payload: usuario
-                    })
-                    localStorage.setItem("usuario", JSON.stringify(usuarioMOD))
-                } catch (error) {
-                    console.log(error)
-                }
-            }
-            else {
-                console.log("Usted ya posee esta cuenta")
-            }
-
-            break;
-        case "ARS":
-            if (!usuario.cuentas[1].activo) {
-                console.log(usuario)
-                const usuarioMOD = ({ ...usuario, ...usuario.cuentas[1].activo = true })
-                try {
-
-                    await db.collection("Cuentas").doc(usuario.email).update(
-                        usuarioMOD
-                    )
-                    dispatch({
-                        type: USUARIO_INICIADO_CON_EXITO,
-                        payload: usuario
-                    })
-                    localStorage.setItem("usuario", JSON.stringify(usuarioMOD))
-                } catch (error) {
-                    console.log(error)
-                }
-            }
-            else {
-                console.log("Usted ya posee esta cuenta")
-            }
-
-            break;
-        case "CC":
-            if (!usuario.cuentas[2].activo) {
-                console.log(usuario)
-                const usuarioMOD = ({ ...usuario, ...usuario.cuentas[2].activo = true })
-                try {
-
-                    await db.collection("Cuentas").doc(usuario.email).update(
-                        usuarioMOD
-                    )
-                    dispatch({
-                        type: USUARIO_INICIADO_CON_EXITO,
-                        payload: usuario
-                    })
-                    localStorage.setItem("usuario", JSON.stringify(usuarioMOD))
-                } catch (error) {
-                    console.log(error)
-                }
-            }
-            else {
-                console.log("Usted ya posee esta cuenta")
-            }
-
-            break;
-
-
-        default:
-            console.log("Agustin Aguilera - Todos los derechos reservados")
-
+            await db.collection("Cuentas").doc(usuario.email).update(
+                usuarioMOD
+            )
+            dispatch({
+                type: USUARIO_INICIADO_CON_EXITO,
+                payload: usuario
+            })
+            localStorage.setItem("usuario", JSON.stringify(usuarioMOD))
+        } catch (error) {
+            console.log(error)
+        }
+    }
+    else {
+        console.log("Usted ya posee esta cuenta")
     }
 }
 
@@ -188,78 +133,39 @@ export const depositarFondosAccion = (tipoDeCuenta, cupon) => async (dispatch, g
     dispatch({
         type: CARGANDO
     })
+    let tipo
+    if (tipoDeCuenta === "USD") tipo = 0
+    else if (tipoDeCuenta === "ARS") tipo = 1
+    else if (tipoDeCuenta === "CC") tipo = 2
 
     const usuario = getState().usuarios.usuarioLogeado
+    if (usuario.cuentas[tipo].activo && cupon === "agustin.depositando100pe") {
+        const usuarioMOD = ({ ...usuario, ...usuario.cuentas[tipo].saldo += 800 })
+        const esteMovimiento = {
+            tipo: "DEPOSITO",
+            dinero: 800,
+            tiempo: Date.now()
+        }
+        usuarioMOD.cuentas[tipo].ultimosMovimientos.push(esteMovimiento)
+        try {
 
-    switch (tipoDeCuenta) {
-        case "USD":
-            if (usuario.cuentas[0].activo && cupon === "agustin.depositando100pe") {
-                const usuarioMOD = ({ ...usuario, ...usuario.cuentas[0].saldo += 800 })
-                try {
-
-                    await db.collection("Cuentas").doc(usuario.email).update(
-                        usuarioMOD
-                    )
-                    dispatch({
-                        type: USUARIO_INICIADO_CON_EXITO,
-                        payload: usuario
-                    })
-                    localStorage.setItem("usuario", JSON.stringify(usuarioMOD))
-                } catch (error) {
-                    console.log(error)
-                }
-            }
-            else {
-                console.log("Usted no tiene esta cuenta")
-            }
-            break;
-        case "ARS":
-            if (usuario.cuentas[1].activo && cupon === "agustin.depositando100pe") {
-                const usuarioMOD = ({ ...usuario, ...usuario.cuentas[1].saldo += 800 })
-                try {
-
-                    await db.collection("Cuentas").doc(usuario.email).update(
-                        usuarioMOD
-                    )
-                    dispatch({
-                        type: USUARIO_INICIADO_CON_EXITO,
-                        payload: usuario
-                    })
-                    localStorage.setItem("usuario", JSON.stringify(usuarioMOD))
-                } catch (error) {
-                    console.log(error)
-                }
-            }
-            else {
-                console.log("Usted no tiene esta cuenta")
-            }
-            break;
-        case "CC":
-            if (usuario.cuentas[2].activo && cupon === "agustin.depositando100pe") {
-                const usuarioMOD = ({ ...usuario, ...usuario.cuentas[2].saldo += 800 })
-                try {
-
-                    await db.collection("Cuentas").doc(usuario.email).update(
-                        usuarioMOD
-                    )
-                    dispatch({
-                        type: USUARIO_INICIADO_CON_EXITO,
-                        payload: usuario
-                    })
-                    localStorage.setItem("usuario", JSON.stringify(usuarioMOD))
-                } catch (error) {
-                    console.log(error)
-                }
-            }
-            else {
-                console.log("Usted no tiene esta cuenta")
-            }
-            break;
-
-
-
-        default:
-            console.log("Agustin Aguilera - Todos los derechos reservados")
-
+            await db.collection("Cuentas").doc(usuario.email).update(
+                usuarioMOD
+            )
+            dispatch({
+                type: USUARIO_INICIADO_CON_EXITO,
+                payload: usuario
+            })
+            localStorage.setItem("usuario", JSON.stringify(usuarioMOD))
+        } catch (error) {
+            console.log(error)
+        }
+        return
     }
+    else {
+        console.log("Usted no tiene esta cuenta")
+    }
+
+    console.log("Agustin Aguilera - Todos los derechos reservados")
+
 }
