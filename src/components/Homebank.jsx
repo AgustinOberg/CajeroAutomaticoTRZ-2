@@ -1,8 +1,21 @@
 import React from 'react'
+import { withRouter } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 
-const Homebank = () => {
-
+const Homebank = (props) => {
     const cuentas = JSON.parse(localStorage.getItem("usuario")).cuentas
+    const activo = useSelector(store => store.usuarios.activo)
+
+
+    React.useEffect(() => {
+        const redirigir = () => {
+            if (!activo) {
+                props.history.push("/")
+            }
+        }
+        redirigir()
+    })
+
     return (
         <div className="mt-3">
             <h4 className="text-center">Home Banking</h4>
@@ -73,4 +86,4 @@ const Homebank = () => {
     )
 }
 
-export default Homebank
+export default withRouter(Homebank)
