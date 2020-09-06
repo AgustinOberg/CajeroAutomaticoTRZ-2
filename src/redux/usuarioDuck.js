@@ -139,11 +139,11 @@ export const depositarFondosAccion = (tipoDeCuenta, cupon) => async (dispatch, g
     else if (tipoDeCuenta === "CC") tipo = 2
 
     const usuario = getState().usuarios.usuarioLogeado
-    if (usuario.cuentas[tipo].activo && cupon === "agustin.depositando800pe") {
-        const usuarioMOD = ({ ...usuario, ...usuario.cuentas[tipo].saldo += 800 })
+    if (usuario.cuentas[tipo].activo && cupon === "agustin.depositando900pe") {
+        const usuarioMOD = ({ ...usuario, ...usuario.cuentas[tipo].saldo += 900 })
         const esteMovimiento = {
             tipo: "DEPOSITO",
-            dinero: 800,
+            dinero: 900,
             tiempo: Date.now()
         }
         usuarioMOD.cuentas[tipo].ultimosMovimientos.push(esteMovimiento)
@@ -206,8 +206,7 @@ export const transferirAccion = (tipoDeCuenta, monto, emailDestino, tipoDeCuenta
                 tipo: "TRANSFERENCIA",
                 dinero: monto,
                 tiempo: Date.now(),
-                emailDesde: usuario.email,
-                emailHasta: null
+                emailDesde: usuario.email
             }
             usuarioDestinoMOD.cuentas[tipoDeCuentaDelDestino].ultimosMovimientos.push(esteMovimientoReceptor)
 

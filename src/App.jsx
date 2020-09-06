@@ -1,11 +1,12 @@
 import React from 'react';
 
 import Navbar from './components/Navbar';
-import Homebank from './components/Homebank'
+import Homebank from './components/Homebank/Homebank'
 import Inicio from './components/Inicio'
 import Contacto from './components/Contacto'
 import Sesion from './components/Sesion'
 import Operaciones from './components/Operaciones';
+import Detalle from './components/Homebank/Detalle';
 import { auth } from './firebase'
 import {
   BrowserRouter as Router,
@@ -61,6 +62,7 @@ function App() {
           <Route component={Inicio} path="/" exact />
           <Route component={Sesion} path="/sesion" />
           <RutaProtegida component={Operaciones} path="/operaciones" />
+          <RutaProtegida component={Detalle} path="/mi-homebank/detalle" exact />
           <RutaProtegida component={Homebank} path="/mi-homebank" exact />
           <Route component={Contacto} path="/contacto" />
         </Switch>
