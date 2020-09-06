@@ -6,13 +6,12 @@ const Detalle = (props) => {
     const hayProps = props.location.state
     React.useEffect(() => {
         const reedirigir = () => {
-            console.log("entro")
             if (!hayProps) {
                 props.history.push("/")
             }
         }
         reedirigir()
-    }, [props.location.state, props.history])
+    }, [props.history, hayProps])
 
     let tipo = "error"
     let cuentas = "error"

@@ -56,6 +56,7 @@ function App() {
 
   return firebaseUser !== false ? (
     <Router>
+      {console.log("Todos los derechos reservados - Aguilera Agustín 2020")}
       <Navbar />
       <div className="container">
         <Switch>
