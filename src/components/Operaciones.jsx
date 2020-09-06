@@ -39,12 +39,71 @@ const Operaciones = () => {
                 if (res === 'DEPOSITO_EXITOSO') {
                     setMensajeError("")
                     setMensajeExito(`Depositaste correctamente`)
+                    setCupon("")
                 }
                 else if (res === 'CODIGO_INVALIDO') {
+                    setCupon("")
                     setMensajeExito("")
                     setMensajeError("Error al depositar: Código inválido")
                 }
             })
+        }
+        else {
+            setMensajeExito("")
+            setMensajeError("Seleccione una cuenta")
+        }
+    }
+
+    const realizarTransferencia = () => {
+        if (tipoDeCuenta !== "") {
+            if (emailAtransferir !== "") {
+                if (montoAtransferir > 1) {
+                    if (tipoDeCuentaDestinoTransferencia !== "") {
+
+                        dispatch(transferirAccion(tipoDeCuenta, montoAtransferir, emailAtransferir, tipoDeCuentaDestinoTransferencia)).then(res => {
+                            switch (res) {
+                                case "SU_CUENTA_NO_EXISTE":
+                                    setMensajeExito("")
+                                    setMensajeError("Error al transferir: Su cuenta seleccionada no existe")
+                                    break;
+                                case "MONTO_INSUFICIENTE":
+                                    setMensajeExito("")
+                                    setMensajeError("Error al transferir: Usted no posee monto suficiente")
+                                    break;
+                                case "EMAIL_DESTINO_INVALIDO":
+                                    setMensajeExito("")
+                                    setMensajeError("Error al transferir: Email de destino inválido")
+                                    break;
+                                case "DESTINO_SIN_CUENTA":
+                                    setMensajeExito("")
+                                    setMensajeError("Error al transferir: El usuario a transferir no posee la cuenta " + tipoDeCuentaDestinoTransferencia + " activa")
+                                    break;
+                                case "TRANSFERENCIA_EXITO":
+                                    setMensajeExito("Transferencia realizada con éxito")
+                                    setMensajeError("")
+                                    break;
+                                default:
+                                    setMensajeExito("")
+                                    setMensajeError("ERROR")
+                                    break;
+                            }
+                        })
+
+                    }
+                    else {
+                        setMensajeExito("")
+                        setMensajeError("Seleccione una cuenta de destino")
+                    }
+                }
+                else {
+                    setMensajeExito("")
+                    setMensajeError("Monto inválido")
+                }
+            }
+            else {
+                setMensajeExito("")
+                setMensajeError("Escriba un email de destino")
+            }
         }
         else {
             setMensajeExito("")
@@ -79,14 +138,14 @@ const Operaciones = () => {
                             <div className="d-flex">
                                 <input type="email" className="form-control mr-2" placeholder="Email" value={emailAtransferir} onChange={e => setEmailAtransferir(e.target.value)} />
                                 <input type="number" className="form-control mr-2" placeholder="Dinero" value={montoAtransferir} onChange={e => setMontoAtransferir(e.target.value)} />
-                                <select className="custom-select" onChange={e => e.target.value !== "ELEGIR" ? setTipoDeCuentaDestinoTransferencia(e.target.value) : null}>
-                                    <option value="ELEGIR" >¿Hacia que cuenta?</option>
+                                <select className="custom-select" onChange={e => setTipoDeCuentaDestinoTransferencia(e.target.value)}>
+                                    <option value="" >¿Hacia que cuenta?</option>
                                     <option value="ARS">Caja de ahorro en ARS</option>
                                     <option value="USD">Caja de ahorro en USD</option>
                                     <option value="CC">Cuenta corriente</option>
                                 </select>
 
-                                <button type="button" className="btn btn-sm btn-dark ml-2" onClick={() => dispatch(transferirAccion(tipoDeCuenta, montoAtransferir, emailAtransferir, tipoDeCuentaDestinoTransferencia))}>Transferir</button>
+                                <button type="button" className="btn btn-sm btn-dark ml-2" onClick={realizarTransferencia}>Transferir</button>
                             </div>
                         </div>
 
