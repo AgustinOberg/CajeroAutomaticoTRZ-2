@@ -120,12 +120,13 @@ export const crearCuentaAccion = (tipoDeCuenta) => async (dispatch, getState) =>
                 payload: usuario
             })
             localStorage.setItem("usuario", JSON.stringify(usuarioMOD))
+            return "CUENTA_CREADA_CON_EXITO"
         } catch (error) {
             console.log(error)
         }
     }
     else {
-        console.log("Usted ya posee esta cuenta")
+        return "CUENTA_REPETIDA"
     }
 }
 
@@ -157,13 +158,14 @@ export const depositarFondosAccion = (tipoDeCuenta, cupon) => async (dispatch, g
                 payload: usuario
             })
             localStorage.setItem("usuario", JSON.stringify(usuarioMOD))
+            return "DEPOSITO_EXITOSO"
         } catch (error) {
             console.log(error)
         }
-        return
+
     }
     else {
-        console.log("Usted no tiene esta cuenta")
+        return "CODIGO_INVALIDO"
     }
 
     console.log("Agustin Aguilera - Todos los derechos reservados")

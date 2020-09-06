@@ -3,14 +3,54 @@ import { crearCuentaAccion, depositarFondosAccion, transferirAccion } from '../r
 import { useDispatch } from 'react-redux'
 
 const Operaciones = () => {
-    const [tipoDeCuenta, setTipoDeCuenta] = React.useState(null);
+    const [tipoDeCuenta, setTipoDeCuenta] = React.useState("");
     const [cupon, setCupon] = React.useState('');
     const [tipoDeCuentaDestinoTransferencia, setTipoDeCuentaDestinoTransferencia] = React.useState('');
     const [montoAtransferir, setMontoAtransferir] = React.useState(0);
     const [emailAtransferir, setEmailAtransferir] = React.useState('');
-
+    const [mensajeExito, setMensajeExito] = React.useState('')
+    const [mensajeError, setMensajeError] = React.useState('')
 
     const dispatch = useDispatch()
+    const realizarAbrirCuenta = () => {
+        if (tipoDeCuenta !== "") {
+
+            dispatch(crearCuentaAccion(tipoDeCuenta)).then(res => {
+                if (res === 'CUENTA_CREADA_CON_EXITO') {
+                    setMensajeError("")
+                    setMensajeExito(`La cuenta: ${tipoDeCuenta} fue creada correctamente`)
+
+                }
+                else if (res === "CUENTA_REPETIDA") {
+                    setMensajeExito("")
+                    setMensajeError("Usted ya posee una cuenta de tipo: " + tipoDeCuenta)
+                }
+                setTipoDeCuenta("")
+            })
+        }
+        else {
+            setMensajeExito("")
+            setMensajeError("Seleccione una cuenta")
+        }
+    }
+    const realizarDespositar = () => {
+        if (tipoDeCuenta !== "") {
+            dispatch(depositarFondosAccion(tipoDeCuenta, cupon)).then(res => {
+                if (res === 'DEPOSITO_EXITOSO') {
+                    setMensajeError("")
+                    setMensajeExito(`Depositaste correctamente`)
+                }
+                else if (res === 'CODIGO_INVALIDO') {
+                    setMensajeExito("")
+                    setMensajeError("Error al depositar: Código inválido")
+                }
+            })
+        }
+        else {
+            setMensajeExito("")
+            setMensajeError("Seleccione una cuenta")
+        }
+    }
 
     return (
         <div className="mt-5">
@@ -18,10 +58,17 @@ const Operaciones = () => {
             <hr />
             <div className="row justify-content-center">
                 <div className="col-12 col-sm-12 col-md-12 col-xl-7">
+                    {mensajeExito && (<div className="alert alert-success mt-3 text-center">
+                        {mensajeExito}
+                    </div>)}
+                    {mensajeError && (
+                        <div className="alert alert-danger mt-3 text-center">
+                            {mensajeError}
+                        </div>)}
                     <form>
 
-                        <select className="custom-select" onChange={e => e.target.value !== "ELEGIR" ? setTipoDeCuenta(e.target.value) : null}>
-                            <option value="ELEGIR">Elige tu cuenta ...</option>
+                        <select className="custom-select" onChange={e => setTipoDeCuenta(e.target.value)}>
+                            <option value="">Elige tu cuenta ...</option>
                             <option value="ARS">Caja de ahorro en ARS</option>
                             <option value="USD">Caja de ahorro en USD</option>
                             <option value="CC">Cuenta corriente</option>
@@ -47,13 +94,13 @@ const Operaciones = () => {
                             <label className="font-weight-light mt-4">Depositar fondos</label>
                             <div className="d-flex">
                                 <input type="text" className="form-control " placeholder="Cupón de acreditación" value={cupon} onChange={e => setCupon(e.target.value)} />
-                                <button type="button" className="btn btn-sm btn-dark ml-2" onClick={() => dispatch(depositarFondosAccion(tipoDeCuenta, cupon), setCupon(""))}>Depositar</button>
+                                <button type="button" className="btn btn-sm btn-dark ml-2" onClick={realizarDespositar}>Depositar</button>
                             </div>
                         </div>
                         <div>
                             <div className="d-flex align-items-center justify-content-between mt-4">
                                 <button type="button" className="btn btn-sm btn-dark">Comprar dolares</button>
-                                <button type="button" className="btn btn-sm btn-dark ml-2" onClick={() => dispatch(crearCuentaAccion(tipoDeCuenta))}>Abrir cuenta</button>
+                                <button type="button" className="btn btn-sm btn-dark ml-2" onClick={realizarAbrirCuenta}>Abrir cuenta</button>
                             </div>
                         </div>
 
@@ -64,9 +111,6 @@ const Operaciones = () => {
                 </div>
 
             </div>
-            <form>
-
-            </form>
         </div>
     )
 }

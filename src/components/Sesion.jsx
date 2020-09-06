@@ -8,7 +8,7 @@ const Sesion = (props) => {
     const [emailImput, setEmailImput] = React.useState('');
     const [contraseñaImput, setContraseñaImput] = React.useState('');
     const activo = useSelector(store => store.usuarios.activo)
-
+    const loading = useSelector(store => store.usuarios.cargando)
 
     React.useEffect(() => {
         const redirigir = () => {
@@ -32,7 +32,7 @@ const Sesion = (props) => {
                         <button className="btn btn-dark btn-block mb-2">Iniciar Sesión</button>
                         <div className="d-flex btn-group justify-content-center">
                             <button className="btn btn-success">Github</button>
-                            <button type="button" className="btn btn-success" onClick={() => dispatch(iniciarSesionGoogleAccion())}>Google</button>
+                            <button type="button" className="btn btn-success" disabled={loading} onClick={() => dispatch(iniciarSesionGoogleAccion())}>Google</button>
                             <button className="btn btn-success">Facebook</button>
                         </div>
                         <div className="d-flex justify-content-between">
