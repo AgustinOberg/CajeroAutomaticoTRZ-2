@@ -3,28 +3,36 @@ import { generate as generarKey } from 'shortid'
 import { withRouter } from 'react-router-dom'
 
 const Detalle = (props) => {
-
+    const hayProps = props.location.state
     React.useEffect(() => {
         const reedirigir = () => {
-            if (props.location.state === undefined) {
+            console.log("entro")
+            if (!hayProps) {
                 props.history.push("/")
             }
         }
         reedirigir()
     }, [props.location.state, props.history])
 
+    let tipo = "error"
+    let cuentas = "error"
+    if (hayProps) {
 
-    let tipo
-    if (props.location.state.tipo === "USD") tipo = 0
-    else if (props.location.state.tipo === "ARS") tipo = 1
-    else if (props.location.state.tipo === "CC") tipo = 2
+        if (props.location.state.tipo === "USD") tipo = 0
+        else if (props.location.state.tipo === "ARS") tipo = 1
+        else if (props.location.state.tipo === "CC") tipo = 2
+        cuentas = JSON.parse(localStorage.getItem("usuario")).cuentas
+    }
+    else {
 
-    const cuentas = JSON.parse(localStorage.getItem("usuario")).cuentas
+    }
 
 
 
-    return props.location.state !== undefined ? (
+
+    return hayProps ? (
         <div className="mt-5">
+
             <h4 className="text-center">Detalles de tus movimientos</h4>
             <hr />
             <table className="table table-striped text-center">

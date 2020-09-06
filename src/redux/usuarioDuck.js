@@ -252,6 +252,6 @@ export const transferirAccion = (tipoDeCuenta, monto, emailDestino, tipoDeCuenta
         return "SU_CUENTA_NO_EXISTE"
     }
 
-    console.log("Agustin Aguilera - Todos los derechos reservados")
+
 
 }
