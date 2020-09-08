@@ -1,5 +1,7 @@
 import React from 'react'
 import { generate as generarKey } from 'shortid'
+import { Paper, Typography, Box } from '@material-ui/core'
+
 
 const HomeBankTarjetas = (props, cuentas) => {
     let tipo
@@ -9,22 +11,23 @@ const HomeBankTarjetas = (props, cuentas) => {
 
     return (
         <>
-            <div className="card">
-                <div className="card-header text-center">
-                    Caja de ahorro en {props.tipo}
-                </div>
-                <ul className="list-group list-group-flush">
-                    <li className="list-group-item text-center" key={generarKey()}>Saldo: <strong>${props.cuentas[tipo].saldo}</strong></li>
+            <Paper className="card">
+                <Box className="card-header text-center">
+                    <Typography><b>Caja de ahorro en {props.tipo} </b></Typography>
+
+                </Box>
+                <ul className="list-group  list-group-flush">
+                    <li className="list-group-item text-center" key={generarKey()}><Typography>Saldo: <strong>${props.cuentas[tipo].saldo}</strong></Typography></li>
                     {
                         props.cuentas[tipo].ultimosMovimientos.length ?
                             (props.cuentas[tipo].ultimosMovimientos.reverse().map((item, idx) =>
                                 idx < 6 ?
-                                    <button type="button" key={generarKey()} className="list-group-item list-group-item-action">{item.tipo}<span className="float-right">{item.tipo === "TRANSFERENCIA" && item.emailHasta ? "-" : "+"}${item.dinero}</span> </button>
+                                    <li key={generarKey()} className="list-group-item">{item.tipo}<span className="float-right">{item.tipo === "TRANSFERENCIA" && item.emailHasta ? "-" : "+"}${item.dinero}</span> </li>
                                     : null
                             )) : null
                     }
                 </ul>
-            </div>
+            </Paper>
         </>
     )
 }

@@ -1,24 +1,39 @@
 import React from 'react';
 
-import Navbar from './components/Navbar';
+import Contenedor from './components/Navbar/Contenedor'
 import Homebank from './components/Homebank/Homebank'
 import Inicio from './components/Inicio'
 import Contacto from './components/Contacto'
-import Sesion from './components/Sesion'
 import Operaciones from './components/Operaciones';
 import Detalle from './components/Homebank/Detalle';
 import { auth } from './firebase'
+import {
+  makeStyles
+} from '@material-ui/core'
 import {
   BrowserRouter as Router,
   Switch,
   Route,
   Redirect
 } from "react-router-dom";
+const estilos = makeStyles(theme => ({
+
+  content: {
+    flexGrow: 1,
+    backgroundColor: theme.palette.background.default,
+    padding: theme.spacing(3),
+    [theme.breakpoints.down('xs')]: {
+      margin: '0',
+    },
+    marginLeft: "240px",
+    marginTop: "10px"
+  }
+}))
 
 
 function App() {
 
-
+  const classes = estilos()
 
 
 
@@ -56,12 +71,14 @@ function App() {
 
   return firebaseUser !== false ? (
     <Router>
+
       {console.log("Todos los derechos reservados - Aguilera Agustín 2020")}
-      <Navbar />
-      <div className="container">
+      <Contenedor />
+
+      <div className={classes.content}>
+        <div className={classes.toolbar}></div>
         <Switch>
           <Route component={Inicio} path="/" exact />
-          <Route component={Sesion} path="/sesion" />
           <RutaProtegida component={Operaciones} path="/operaciones" />
           <RutaProtegida component={Detalle} path="/mi-homebank/detalle" exact />
           <RutaProtegida component={Homebank} path="/mi-homebank" exact />

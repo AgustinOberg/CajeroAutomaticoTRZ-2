@@ -1,5 +1,7 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
+import { Paper, Divider, Typography } from '@material-ui/core'
+
 
 const Inicio = () => {
 
@@ -7,16 +9,18 @@ const Inicio = () => {
 
     return (
 
-        <div className="jumbotron mt-5">
-            <h1 className="display-4">{usuarioSesion ? "Bienvenido/a " + usuarioSesion.nombre : "Bienvenido a Banco TRZ"}</h1>
-            <p className="lead">Banco TRZ 2 : Versión alpha 0.8</p>
-            <hr className="my-4" />
-            <p>Cosas que faltan: protección de homebank/detalles, contacto</p>
-            <p>El responsive no será tratado en esta versión, ya que en la versión 2 habrá un cambio total de diseño</p>
-            <p>Posible mejora: perfil de usuario</p>
-            <p>Cupon para depositar: "agustin.depositando900pe". Es universal. Este sistema va a mejorar</p>
+        <Paper variant="outlined" className="p-5 mt-5">
+            <Typography variant="h3" >{usuarioSesion ? "Bienvenido/a " + usuarioSesion.nombre : "Bienvenido a Banco TRZ"}</Typography>
+            <Typography className="lead" variant="subtitle2">Banco TRZ 2 : Versión beta 1.0</Typography>
+            <Divider className="my-4" />
+            <div className="mt-3">
 
-        </div>
+                <Typography>Cosas que faltan: Bugs de Operaciones + Comprar Dolares</Typography>
+                <Typography>Posible mejora: perfil de usuario</Typography>
+                <Typography>Cupon para depositar: "agustin.depositando900pe". Es universal. Este sistema va a mejorar</Typography>
+            </div>
+
+        </Paper>
     )
 }
 

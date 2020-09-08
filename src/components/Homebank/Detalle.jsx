@@ -1,6 +1,8 @@
 import React from 'react'
 import { generate as generarKey } from 'shortid'
 import { withRouter } from 'react-router-dom'
+import moment from 'moment'
+import 'moment/locale/es' // Pasar a español
 
 const Detalle = (props) => {
     const hayProps = props.location.state
@@ -52,7 +54,7 @@ const Detalle = (props) => {
                                 <tr key={generarKey()}>
                                     <td>{item.tipo}</td>
                                     <th key={generarKey()} scope="row">{item.dinero}</th>
-                                    <th key={generarKey()} scope="row">-</th>
+                                    <th key={generarKey()} scope="row">{moment(item.tiempo).format('MMMM Do YYYY, h:mm:ss a')}</th>
                                     <th key={generarKey()} scope="row">{item.emailDesde}</th>
                                     <th key={generarKey()} scope="row">{item.emailHasta}</th>
 

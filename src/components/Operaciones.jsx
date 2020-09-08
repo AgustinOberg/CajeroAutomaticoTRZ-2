@@ -1,6 +1,11 @@
 import React from 'react'
 import { crearCuentaAccion, depositarFondosAccion, transferirAccion } from '../redux/usuarioDuck'
 import { useDispatch } from 'react-redux'
+import { Divider, Typography } from '@material-ui/core';
+import MuiAlert from '@material-ui/lab/Alert';
+function Alert(props) {
+    return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
 
 const Operaciones = () => {
     const [tipoDeCuenta, setTipoDeCuenta] = React.useState("");
@@ -113,17 +118,20 @@ const Operaciones = () => {
 
     return (
         <div className="mt-5">
-            <h4 className="text-center">Operaciones</h4>
-            <hr />
+            <Typography variant="h4" color="initial" className="text-center">
+                Operaciones
+            </Typography>
+            <Divider className="mt-2 mb-3" />
+
             <div className="row justify-content-center">
                 <div className="col-12 col-sm-12 col-md-12 col-xl-7">
-                    {mensajeExito && (<div className="alert alert-success mt-3 text-center">
+                    {mensajeExito && (<Alert severity="success" className="mt-1 mb-3">
                         {mensajeExito}
-                    </div>)}
+                    </Alert>)}
                     {mensajeError && (
-                        <div className="alert alert-danger mt-3 text-center">
+                        <Alert severity="error" className="mt-1 mb-3">
                             {mensajeError}
-                        </div>)}
+                        </Alert>)}
                     <form>
 
                         <select className="custom-select" onChange={e => setTipoDeCuenta(e.target.value)}>
