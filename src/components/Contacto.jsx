@@ -1,7 +1,6 @@
 import React from 'react'
 import { Divider, Typography, Button } from '@material-ui/core'
 
-
 const Contacto = () => {
     return (
         <div className="mt-5">
