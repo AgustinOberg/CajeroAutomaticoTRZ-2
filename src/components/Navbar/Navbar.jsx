@@ -2,6 +2,8 @@ import React from 'react'
 import { AppBar, Toolbar, Typography, makeStyles, IconButton, Button } from '@material-ui/core'
 import MenuIcon from '@material-ui/icons/Menu';
 import { useSelector, useDispatch } from 'react-redux'
+import { Link } from 'react-router-dom';
+
 import { iniciarSesionGoogleAccion } from '../../redux/usuarioDuck'
 import { cerrarSesion } from '../../redux/usuarioDuck'
 
@@ -44,9 +46,9 @@ const Navbar = (props) => {
                 <Typography variant='h6' className={classes.title}>
                     Banco TRZ
                 </Typography>
-                {activo ? (<Button variant="contained" color="secondary" onClick={() => dispatch(cerrarSesion())}>
+                {activo ? (<Button component={Link} to="/" variant="contained" color="secondary" onClick={() => dispatch(cerrarSesion())}>
                     Cerrar Sesión
-                </Button>) : <Button variant="contained" color="secondary" disabled={loading} onClick={() => dispatch(iniciarSesionGoogleAccion())}>
+                </Button>) : <Button variant="contained" color="secondary" disabled={loading} component={Link} to="/" onClick={() => dispatch(iniciarSesionGoogleAccion())}>
                         Iniciar Sesión
                 </Button>}
             </Toolbar>
