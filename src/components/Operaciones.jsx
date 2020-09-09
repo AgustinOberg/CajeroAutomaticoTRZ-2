@@ -1,7 +1,7 @@
 import React from 'react'
 import { crearCuentaAccion, depositarFondosAccion, transferirAccion } from '../redux/usuarioDuck'
 import { useDispatch } from 'react-redux'
-import { Divider, Typography } from '@material-ui/core';
+import { Divider, Typography, Button } from '@material-ui/core';
 import MuiAlert from '@material-ui/lab/Alert';
 function Alert(props) {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -71,6 +71,10 @@ const Operaciones = () => {
                                     setMensajeExito("")
                                     setMensajeError("Error al transferir: Su cuenta seleccionada no existe")
                                     break;
+                                case "CUENTAS_DISTINTAS":
+                                    setMensajeExito("")
+                                    setMensajeError("Error al transferir: No se puede transferir entre cuentas de distinta moneda")
+                                    break;
                                 case "MONTO_INSUFICIENTE":
                                     setMensajeExito("")
                                     setMensajeError("Error al transferir: Usted no posee monto suficiente")
@@ -124,7 +128,7 @@ const Operaciones = () => {
             <Divider className="mt-2 mb-3" />
 
             <div className="row justify-content-center">
-                <div className="col-12 col-sm-12 col-md-12 col-xl-7">
+                <div className="col-12 col-sm-12 col-md-12 col-xl-8">
                     {mensajeExito && (<Alert severity="success" className="mt-1 mb-3">
                         {mensajeExito}
                     </Alert>)}
@@ -152,8 +156,7 @@ const Operaciones = () => {
                                     <option value="USD">Caja de ahorro en USD</option>
                                     <option value="CC">Cuenta corriente</option>
                                 </select>
-
-                                <button type="button" className="btn btn-sm btn-dark ml-2" onClick={realizarTransferencia}>Transferir</button>
+                                <Button type="button" variant="contained" color="primary" fullWidth={true} size="small" className="ml-2" onClick={realizarTransferencia}>Transferir</Button>
                             </div>
                         </div>
 
@@ -161,13 +164,13 @@ const Operaciones = () => {
                             <label className="font-weight-light mt-4">Depositar fondos</label>
                             <div className="d-flex">
                                 <input type="text" className="form-control " placeholder="Cupón de acreditación" value={cupon} onChange={e => setCupon(e.target.value)} />
-                                <button type="button" className="btn btn-sm btn-dark ml-2" onClick={realizarDespositar}>Depositar</button>
+                                <Button variant="contained" color="primary" size="small" type="button" className=" ml-2" onClick={realizarDespositar}>Depositar</Button>
                             </div>
                         </div>
                         <div>
                             <div className="d-flex align-items-center justify-content-between mt-4">
-                                <button type="button" className="btn btn-sm btn-dark">Comprar dolares</button>
-                                <button type="button" className="btn btn-sm btn-dark ml-2" onClick={realizarAbrirCuenta}>Abrir cuenta</button>
+                                <Button type="button" variant="contained" color="primary" size="small" onClick={() => alert("Falta implementar")}>Comprar dolares</Button>
+                                <Button variant="contained" color="primary" size="small" className="ml-2" type="button" onClick={realizarAbrirCuenta}>Crear cuenta</Button>
                             </div>
                         </div>
 
