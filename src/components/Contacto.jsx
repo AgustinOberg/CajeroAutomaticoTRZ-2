@@ -30,11 +30,11 @@ const Contacto = () => {
             <Typography variant="h6" color="initial" className="mt-3">
                 Contactame
                 </Typography>
-            <Typography variant="body1" color="initial">
-                <Button variant="contained" color="primary" href="https://github.com/LXR-11">GitHub</Button>
-                <Button variant="contained" color="secondary" href="mailto:agustin.aguilera424@gmail.com" className="mx-5">E-Mail</Button>
-                <Button variant="contained" color="primary" href="https://www.linkedin.com/in/aguilera-agustin/">Linkedin</Button>
-            </Typography>
+
+            <Button variant="contained" color="primary" className="my-4" href="https://github.com/Aguilera-Agustin">GitHub</Button>
+            <Button variant="contained" color="secondary" href="mailto:agustin.aguilera424@gmail.com" className="mx-5">E-Mail</Button>
+            <Button variant="contained" color="primary" href="https://www.linkedin.com/in/aguilera-agustin/">Linkedin</Button>
+
             <div className="mt-5 text-center">
 
                 <Typography variant="caption" >Todos los derechos reservados - Aguilera Agustín 2020</Typography>
